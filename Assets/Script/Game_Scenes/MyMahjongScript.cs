@@ -447,7 +447,7 @@ public class MyMahjongScript : MonoBehaviour {
   public void ShowLeavedCardsNumForInit() {
     RoomCreateVo roomCreateVo = GlobalDataScript.roomVo;
 
-    LeavedCardsNum = 144;
+    LeavedCardsNum = 112;
     LeavedCardsNum = LeavedCardsNum - 53;
     LeavedCastNumText.text = (LeavedCardsNum) + "";
   }
