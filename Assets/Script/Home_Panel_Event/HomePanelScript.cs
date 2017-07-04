@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading;
 using DG.Tweening;
 using LitJson;
+using UnityEngine.Networking;
 
 public class HomePanelScript : MonoBehaviour {
   public Image headIconImg;//头像路径
@@ -40,7 +41,8 @@ public class HomePanelScript : MonoBehaviour {
   private int a = 0;
   // Use this for initialization
   void Start() {
-    initUI();
+   // initUI();
+      initUserInfoUI();
     GlobalDataScript.isonLoginPage = false;
     checkEnterInRoom();
     addListener();
@@ -136,6 +138,33 @@ public class HomePanelScript : MonoBehaviour {
 
   private void contactInfoResponse(ClientResponse response) {
   }
+
+  private void initUserInfoUI()
+  {
+      if (GlobalDataScript.loginResponseData != null)
+      {
+          headIcon = GlobalDataScript.loginResponseData.account.headicon;
+          string nickName = GlobalDataScript.loginResponseData.account.nickname;
+          int roomCardCount = GlobalDataScript.loginResponseData.account.roomcard;
+          cardCountText.text = roomCardCount + "";
+          nickNameText.text = nickName;
+          IpText.text = "ID:"+ GlobalDataScript.loginResponseData.account.uuid;
+          GlobalDataScript.loginResponseData.account.roomcard = roomCardCount;
+          Sprite tempHeadIcon;
+          if (string.IsNullOrEmpty(headIcon) == false)
+          {
+              if (GlobalDataScript.imageMap.TryGetValue(headIcon, out tempHeadIcon))
+              {
+                  headIconImg.sprite = tempHeadIcon;
+              }
+              else
+              {
+                  StartCoroutine(DownLoadHeadIcon());
+              }
+          }
+      }
+  }
+
   /***
 	 *初始化显示界面 
 	 */
@@ -244,6 +273,19 @@ public class HomePanelScript : MonoBehaviour {
     //panelCreateDialog.transform.localPosition = new Vector3 (200f,150f);
     panelCreateDialog.GetComponent<RectTransform>().offsetMax = new Vector2(0f, 0f);
     panelCreateDialog.GetComponent<RectTransform>().offsetMin = new Vector2(0f, 0f);
+  }
+
+  private IEnumerator DownLoadHeadIcon()
+  {
+      if (headIcon != null && headIcon != "")
+      {
+          UnityWebRequest www = UnityWebRequest.GetTexture(headIcon);
+          yield return www.Send();
+          texture2D = ((DownloadHandlerTexture)www.downloadHandler).texture;
+          Sprite tempSp = Sprite.Create(texture2D, new Rect(0, 0, texture2D.width, texture2D.height), new Vector2(0, 0));
+          headIconImg.sprite = tempSp;
+          GlobalDataScript.imageMap.Add(headIcon, tempSp);
+      }
   }
 
 

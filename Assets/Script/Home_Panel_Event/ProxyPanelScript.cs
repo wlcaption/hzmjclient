@@ -60,13 +60,17 @@ public class ProxyPanelScript : MonoBehaviour{
     proxyButton.SetActive(GlobalDataScript.hasProxy == false);
   }
 
+  IEnumerator WaitData(float waitTime)
+  {
+      yield return new WaitForSeconds(waitTime);
+  }
+
   private IEnumerator proxyBind(string seniorId) {
     WWWForm data = new WWWForm();
     data.AddField("senior_id", seniorId);
     data.AddField("junior_id", GlobalDataScript.loginResponseData.account.uuid);
     WWW www = new WWW(bindUrl, data);
     yield return www;
-
     if (www != null) {
       if (string.IsNullOrEmpty(www.error)) {
         if ("0".Equals(www.text)) {

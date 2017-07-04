@@ -118,8 +118,8 @@ public class LoginSystemScript : MonoBehaviour {
   }
 
 	public void doLogin(){
-		//GlobalDataScript.getInstance ().wechatOperate.login ();
-        CustomSocket.getInstance().sendMsg(new LoginRequest(null));
+		GlobalDataScript.getInstance ().wechatOperate.login ();
+        //CustomSocket.getInstance().sendMsg(new LoginRequest(null));
 	}
 
   public void UpdateGlobalData(ClientResponse response) {

@@ -12,6 +12,7 @@ namespace AssemblyCSharp {
     public const string ChatSocketUrl = "njmj.holagames.cn";
     public const string SocketUrl = "hzmj.holagames.cn";
     public const int SocketPort = 12000;
+    //public const int SocketPort = 9500;
 
     public const string ShareUrl = "http://njmj-1252425265.cossh.myqcloud.com/njmj.apk";
     public const string ImageUrl = "http://njmj-1252425265.cossh.myqcloud.com/icon0.jpg";
